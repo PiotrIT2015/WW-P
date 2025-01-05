@@ -18,9 +18,20 @@ class ImageViewerApp:
         # Default directory for categories
         self.base_directory = os.path.join(os.getcwd(), "img")  # Compatible with Windows and other OS
 
+        # Default image path
+        self.default_image_path = os.path.join(os.getcwd(), "img\\ikigai.jpeg")  # Path to the default image
+
+        # Create a default image if it doesn't exist
+        self.create_default_image()
+
         # GUI Layout
         self.setup_gui()
         self.load_categories()  # Automatically load categories on startup
+
+    def create_default_image(self):
+        if not os.path.exists(self.default_image_path):
+            img = Image.new('RGB', (800, 600), color = 'gray')
+            img.save(self.default_image_path)
 
     def setup_gui(self):
         # Category list
@@ -45,6 +56,8 @@ class ImageViewerApp:
         Button(self.button_frame, text="RelaxationTube", command=self.launch_yii_app).pack(side="top")
         Button(self.button_frame, text="Exit", command=self.root.quit).pack(side="top")
 
+        self.show_default_image()
+
     def launch_yii_app(self):
         try:
             subprocess.Popen(["php", "yii", "serve"], cwd=os.path.join(os.getcwd(), "RelaxationTube"))
@@ -68,6 +81,9 @@ class ImageViewerApp:
                 if images:
                     self.categories[category] = images
                     self.category_listbox.insert("end", category)
+        
+        if not self.categories:
+          self.show_default_image() # Show default if no categories
 
     def on_category_select(self, event):
         selected = self.category_listbox.curselection()
@@ -78,10 +94,12 @@ class ImageViewerApp:
 
     def show_image(self):
         if not self.current_category:
+            self.show_default_image()
             return
 
         images = self.categories.get(self.current_category, [])
         if not images:
+            self.show_default_image()
             return
 
         image_path = images[self.current_image_index]
@@ -92,6 +110,14 @@ class ImageViewerApp:
         self.canvas.delete("all")
         self.canvas.create_image(400, 300, image=photo, anchor="center")
         self.canvas.image = photo
+
+    def show_default_image(self):
+        img = Image.open(self.default_image_path)
+        photo = ImageTk.PhotoImage(img)
+        self.canvas.delete("all")
+        self.canvas.create_image(400, 300, image=photo, anchor="center")
+        self.canvas.image = photo
+        
 
     def prev_image(self):
         if not self.current_category:
