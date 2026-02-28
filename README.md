@@ -3,7 +3,7 @@
 * [Technologies](#technologies)
 
 ## General info
-This small project is a prototype to create 'OS-WW-P-2'.
+This small project is a prototype to create 'OS-WW-P-2'. It had to be the oposite to 'pandasAnalyzer.py'.
 
 ## Technologies
 * Python version: 3.5
