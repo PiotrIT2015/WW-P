@@ -7,3 +7,5 @@ This small project is a prototype to create 'OS-WW-P-2'.
 
 ## Technologies
 * Python version: 3.5
+
+![image alt](https://github.com/PiotrIT2015/WW-P/blob/master/screenshot.jpeg?raw=true)
